@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+{% load static %}
+{% for post in posts reversed %}
+<div class="post">
+    <div class="user">
+        <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
+            <img src="{{ user.profilis.nuotrauka.url }}"></img>
+        </a>
+        <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
+            {{ post.uploaded_by }}
+            <a class="uploaded_ago">
+                {{ post.date|date:"SHORT_DATE_FORMAT"}}
+            </a>
+        </a>
+    </div>
+    <div class="nuotrauka" href="#">
+        <img src="{{post.nuotrauka.url}}"></img>
+    </div>
+    <div class="description">
+        <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
+            {{ post.uploaded_by }}:
+        </a>
+         {{ post.description }}
+        <div class="komentarai">
+            {% if post.postcomment_set.all %}
+            {% for comment in post.postcomment_set.all reversed %}
+            <p>
+                <a href="" class="commenter">{{ comment.commenter }}: </a>
+                <a>{{ comment }}</a>
+            </p>
+            {% endfor %}
+            {% endif %}
+            <form id="contactForm" action="#" action="" method="post" class="comment-form">
+                {% csrf_token %}
+                <div class="form-group-comment">
+                    <textarea name="komentaras" placeholder="Pridekit komentara..." class="form-control" rows="5" id="comment"></textarea>
+                    <input name="posto_id" value="{{ post.id }}" type="hidden">
+                    <button id="submit-comment" type="submit" onKeyPress="{submitOnEnter}">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endfor %}
+{% endblock %}
