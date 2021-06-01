@@ -1,28 +1,17 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% block content %}
 <div class="upload">            
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="upload_container">
-        <input type="file" id="file" accept="image/*">
-            <img id="prew" alt="" class="preview_photo"/>
-            <label>Description:</label>
-            <input name='description' type="text">
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Ikelti</button>
+        <input name="file" type="file" id="file">
+        <img id="prew" alt="" class="preview_photo"/>
+        <label>Description:</label>
+        <input name='description' type="text">
+        <div class="form-group">
+        <button class="btn btn-outline-info" type="submit">Ikelti</button>
             </div>
         </div>
-    <!-- <fieldset class="form-group">
-        <legend class="border-bottom mb-4">Ikelkit nauja nuotrauka</legend>
-        {{ form|crispy }}
-        <input type="file" onchange="document.getElementById('para').src = window.URL.createObjectURL(this.files[0])">
-            <img id="para" alt="" width="400" height="400" />
-            <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Ikelti</button>
-            </div>
-        </fieldset> -->
 </form>
 </div>
-
 {% endblock %}

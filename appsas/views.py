@@ -6,7 +6,7 @@ from django.views.generic import ListView
 from django.contrib import messages
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.forms import User
-from .forms import  UserUpdateForm, ProfilisUpdateForm, AddPostForm
+from .forms import  UserUpdateForm, ProfilisUpdateForm
 from datetime import datetime, timezone
 from io import BytesIO
 from django.core.files import File
@@ -32,12 +32,6 @@ def index(request):
     }
     return render(request, 'index.html', context=context)
 
-
-
-
-
-
-
 @login_required
 def profilis(request, id):
     user = User.objects.get(pk=id)
@@ -50,14 +44,6 @@ def profilis(request, id):
     }
 
     return render(request, 'profilis.html', context)
-
-
-
-
-
-
-
-
 
 
 @login_required
@@ -79,14 +65,6 @@ def edit_profile(request):
         'p_form': p_form,
     }
     return render(request, 'profilis_edit.html', context)
-
-# class PostLibrary(LoginRequiredMixin, ListView):
-#     model = Post
-#     contex_object_name = 'post'
-#     template_name = 'profilis.html'
-
-#     def get_queryset(self):
-#         return Post.objects.filter(User=Post.request.nuotrauka.all())
 
 @csrf_protect
 def register(request):
@@ -115,28 +93,13 @@ def register(request):
 @login_required()
 def new_post(request):
     if request.method == "POST":
-        form = AddPostForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.instance.uploaded_by = request.user
-            form.save()
-            messages.success(request, f'Nuotrauka sėkmingai įkelta')
+        nuotrauka = request.FILES['file']
+        description = request.POST['description']
+        uploaded_by = request.user
+        Post.objects.create(uploaded_by=uploaded_by, nuotrauka=nuotrauka, description=description)
         return redirect('index')
-    else:
-        form = AddPostForm(request.POST, request.FILES)
-    context = {
-        'form': form,
-    }
-    return render(request, 'new_post.html', context)
+    return render(request, 'new_post.html')
 
-
-
-# @login_required()
-# def other_profile(request,id):
-#     profile_user=User.objects.filter(id=id).first()
-#     posts=Post.objects.all()
-#     # username = User.objects.filter(username=request.username).first()
-
-#     return render(request, 'profilis.html',{"profile_user": profile_user,"posts":posts})
 
 
 # @login_required()
@@ -156,8 +119,8 @@ def new_post(request):
 #     }
 # 
     # return render(request, 'post_detail.html', context)
-@login_required()
-class DetailedPostView(LoginRequiredMixin, DetailView):
-    model = Post
-    template_name = 'post_detail.html'
+# @login_required()
+# class DetailedPostView(LoginRequiredMixin, DetailView):
+#     model = Post
+#     template_name = 'post_detail.html'
 

@@ -18,8 +18,6 @@ class UserUpdateForm(forms.ModelForm):
 
     class Meta:
         model = User
-        # model = Profilis
-        # fields = ['username', 'description']
         fields = ['username', 'email']
 
 
@@ -30,28 +28,3 @@ class ProfilisUpdateForm(forms.ModelForm):
         model = Profilis
         fields = ['nuotrauka', 'description']
 
-class AddPostForm(forms.ModelForm):
-    nuotrauka = forms.ImageField()
-    description = forms.CharField()
-    class Meta:
-        model = Post
-        fields = ['nuotrauka', 'description']
-        widgets = {
-            'nuotrauka': forms.FileInput(attrs={
-                'id': 'nuotraukos_id',
-            })
-        }
-# class NewPostForm(forms.Form):
-#     nuotrauka = forms.ImageField()
-#     description = forms.CharField()
-#     class Meta:
-#         model = Post
-#         fields = ['nuotrauka', 'description' ]
-
-    # def __init__(self, *args, **kwargs):
-    #     super().__init__(*args, **kwargs)
-    #     self.helper = FormHelper()
-    #     self.helper.form_id = 'id-exampleForm'
-    #     self.helper.form_class = 'blueForms'
-    #     self.helper.form_method = 'post'
-    #     self.helper.form_action = 'submit_survey'
