@@ -9,7 +9,8 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('profilis/edit/', views.edit_profile, name='edit-profile'),
     path('new_post/', views.new_post, name='new_post'),
-    # path('search/', views.search, name='search'),
-    # path('profilis/<int:id>/', views.other_profile, name='other_profile'),
-    # path('post_detail/<str:username>/<int:pk>', views.DetailedPostView.as_view(), name='detail-view'),
+    path('search/', views.search, name='search'),
+    path('post_detail/<int:post_id>/', views.detailed_post, name='post_detail'),
+    path('post/<int:post_id>/remove/', views.post_remove, name='post_remove'),
+    path('comment/<int:comment_id>/remove/', views.comment_remove, name='comment_remove'),
 ]

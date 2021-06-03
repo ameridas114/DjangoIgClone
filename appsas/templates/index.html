@@ -14,8 +14,11 @@
             </a>
         </a>
     </div>
-    <div class="nuotrauka" href="#">
-        <img src="{{post.nuotrauka.url}}"></img>
+
+    <div class="nuotrauka">
+        <a href="{% url 'post_detail' post_id=post.id %}">
+            <img  src="{{post.nuotrauka.url}}"></img>
+        </a>
     </div>
     <div class="description">
         <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
@@ -23,8 +26,8 @@
         </a>
          {{ post.description }}
         <div class="komentarai">
-            {% if post.postcomment_set.all %}
-            {% for comment in post.postcomment_set.all reversed %}
+            {% if post.comments.all %}
+            {% for comment in post.comments.all reversed %}
             <p>
                 <a href="" class="commenter">{{ comment.commenter }}: </a>
                 <a>{{ comment }}</a>

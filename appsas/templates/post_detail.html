@@ -1,12 +1,71 @@
 {% extends "base.html" %}
-{% block content %}
+{% block detailed %}
 {% load static %}
-<div class="detailed-container">
-    <div class="detailed-post">
-        <a url="{{post.nuotrauka.url}}"></a>
+<div class="post">
+    <div class="user">
+        <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
+            <img src="{{ post.nuotrauka.url }}"></img>
+            {{ post.uploaded_by }}
+        </a>
+            <a class="uploaded_ago">
+                {{ post.date|date:"SHORT_DATE_FORMAT"}}
+        </a>
     </div>
-    <div class="detailed-description">
-        <div class="detailed-comments">
+<div class="nuotrauka">
+    <a href="{% url 'post_detail' post_id=post.id %}">
+        <img  src="{{post.nuotrauka.url}}"></img>
+    </a>
+</div>
+</div>
+
+<div class="container mt-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex justify-content-center pt-3 pb-2"> 
+                <input type="text" name="text" placeholder="+ Add a comment" class="form-control addtxt"> 
+                {% csrf_token %}
+                <form  action="{% url 'post_remove' post.id %}" method="post">
+                    {% csrf_token %}
+                    <input class="btn btn-danger" type="submit" value="Delete">
+                </form>
+            </div>
+            {% if post.comments.all %}
+            {% for comment in post.comments.all reversed %}
+            {% csrf_token %}
+            <div class="container justify-content-center mt-5 border-left border-right">
+                <div class="d-flex justify-content-center py-2">
+                    <div class="second py-2 px-2"> <span class="text1">{{ comment }}</span>
+                        <div class="d-flex justify-content-between py-1 pt-2">
+                            <div>
+                                <img src="{{ user.profilis.nuotrauka.url }}" width="18">
+                                <a href="{% url 'profilis' post.uploaded_by.profilis.id %}" >
+                                    <span class="text2">{{ comment.commenter }}</span>
+                                </a>
+                                <form  action="{% url 'comment_remove' comment.id %}" method="post">
+                                    {% csrf_token %}
+                                    <input class="btn btn-danger" type="submit" value="Delete">
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="card p-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div class="user d-flex flex-row align-items-center">
+                         <img src="{{ user.profilis.nuotrauka.url }}" width="30" class="user-img rounded-circle mr-2"> <span>
+                             <small class="font-weight-bold text-primary">{{ comment.commenter }}</small>
+                              <small class="font-weight-bold">{{ comment }}</small>
+                    </span> 
+                </div> 
+                </div>
+                <div class="action d-flex justify-content-between mt-2 align-items-center">
+                    <div class="reply px-4"> <small>Remove</small></div>
+                    <div class="icons align-items-center"> <i class="fa fa-star text-warning"></i> <i class="fa fa-check-circle-o check-icon"></i> </div>
+                </div>
+            </div> -->
+            {% endfor %}
+            {% endif %}
         </div>
     </div>
 </div>

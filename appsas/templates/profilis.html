@@ -20,12 +20,12 @@
       </ul>
     </div>
 
-    <div class="library md-4">
-      {% for i in posts %}
+    <div class="library">
+      {% for post in posts %}
       <div class="library-nuotrauka">
-        <span class="close">x</span>
-        <img id="post_nuotrauka" class="nuotrauka-content" src="{{ i.nuotrauka.url }}">
-        <div class="caption">{{i.description}}</div>
+        <a href="{% url 'post_detail' post_id=post.id %}">
+          <img id="post_nuotrauka" class="nuotrauka-content" src="{{ post.nuotrauka.url }}">
+        </a>
       </div>
         {% endfor %}
     </div>

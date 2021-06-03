@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from .models import Post, Profilis, PostComment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -35,7 +35,6 @@ def index(request):
 @login_required
 def profilis(request, id):
     user = User.objects.get(pk=id)
-    # view_user = User.objects.get(id=profilis.user.id)
     posts = Post.objects.filter(uploaded_by=user)
     
     context = {
@@ -102,25 +101,44 @@ def new_post(request):
 
 
 
-# @login_required()
-# def detailed_post(request):
-#     posts=Post.objects.filter(id=Post.id)
-#     uploaded_by=posts.uploaded_by
-#     comments=PostComment.objects.all()
+@login_required()
+def detailed_post(request, post_id):
+    post=Post.objects.get(id=post_id)
+
+    # def delete(request):
+    #     if request:
+
+    context = {
+        'post': post,
+    }
+
+    return render(request, 'post_detail.html', context)
 
 
-#     def delete(request):
-#         if request:
+@login_required()
+def post_remove(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+    if request.method == "POST":
+        post.delete()
+    return redirect('index')
 
-#     context = {
-#         'posts': posts,
-#         'uploaded_by': uploaded_by,
-#         'comments': comments,
-#     }
-# 
-    # return render(request, 'post_detail.html', context)
-# @login_required()
-# class DetailedPostView(LoginRequiredMixin, DetailView):
-#     model = Post
-#     template_name = 'post_detail.html'
 
+
+@login_required()
+def comment_remove(request, comment_id):
+    comment = get_object_or_404(PostComment, id=comment_id)
+    if request.method == "POST":
+        comment.delete()
+        messages.error(request, 'Komentaras sekmingai istrintas')
+    return redirect('post_detail', post_id=comment.post.id)
+
+def search(request):
+    """
+    paprasta paieška. query ima informaciją iš paieškos laukelio,
+    search_results prafiltruoja pagal įvestą tekstą knygų pavadinimus ir aprašymus.
+    Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės 
+    didžiosios/mažosios.
+    """
+    query = request.GET.get('query')
+    search_results = User.objects.filter(Q(username__icontains=query))
+    return render(request, 'search.html', {'search_results': search_results, 'query': query})
