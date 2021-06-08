@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import PostComment, Profilis, Post
+from .models import Like, PostComment, Profilis, Post
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ('uploaded_by', 'description')
@@ -7,6 +7,7 @@ class PostAdmin(admin.ModelAdmin):
 admin.site.register(Post, PostAdmin)
 admin.site.register(Profilis)
 admin.site.register(PostComment)
+admin.site.register(Like)
 
 
 

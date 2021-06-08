@@ -53,26 +53,8 @@ class Profilis(models.Model):
             print(self.nuotrauka.path)
 
 
+class Like(models.Model):
+	user = models.ForeignKey(User, related_name='likes', on_delete=models.CASCADE)
+	post = models.ForeignKey(Post, related_name='likes', on_delete=models.CASCADE)
 
-# class UserFollowing(models.Model):
-#     user_id = models.ForeignKey(User, related_name="following", on_delete=models.CASCADE)
-
-#     following_user_id = models.ForeignKey(User, related_name="followers", on_delete=models.CASCADE)
-
-#     created = models.DateTimeField(auto_now_add=True)
-
-# class PostLibrary()
-
-# class AddPost():
-#     user = models.ForeignKey(Profilis, on_delete=models.CASCADE)
-#     description = models.CharField('Aprasymas', max_length=200)
-#     nuotrauka = models.ImageField(upload_to="uploads", blank=False, null=False)
-
-#     def save(self):
-#         super().save()
-
-#         img = Image.open(self.nuotrauka.path)
-#         if img.height > 600 or img.width > 600:
-#             new_img = (600,600)
-#             img.thumbnail(new_img)
-#             img.save(self.nuotrauka.path)
+    

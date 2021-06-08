@@ -1,5 +1,7 @@
+from django.http import request
+from django.http.response import JsonResponse
 from django.shortcuts import get_object_or_404, render, redirect
-from .models import Post, Profilis, PostComment
+from .models import Like, Post, Profilis, PostComment
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
@@ -54,7 +56,7 @@ def edit_profile(request):
             u_form.save()
             p_form.save()
             messages.success(request, f"Profilis atnaujintas")
-            return redirect('profilis')
+            return redirect('profilis', id=request.user.id)
     else:
         u_form = UserUpdateForm(instance=request.user)
         p_form = ProfilisUpdateForm(instance=request.user.profilis)
@@ -105,8 +107,14 @@ def new_post(request):
 def detailed_post(request, post_id):
     post=Post.objects.get(id=post_id)
 
-    # def delete(request):
-    #     if request:
+    if request.method=='POST':
+        comment=PostComment(content=request.POST.get("komentaras"),
+        date_commented=request.POST.get("date"),
+        commenter= request.user,
+        post=Post.objects.get(pk=post_id)
+        )
+        comment.save()
+        print(comment.date_commented-datetime.now(timezone.utc)),
 
     context = {
         'post': post,
@@ -115,13 +123,13 @@ def detailed_post(request, post_id):
     return render(request, 'post_detail.html', context)
 
 
+
 @login_required()
 def post_remove(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if request.method == "POST":
         post.delete()
     return redirect('index')
-
 
 
 @login_required()
@@ -133,12 +141,21 @@ def comment_remove(request, comment_id):
     return redirect('post_detail', post_id=comment.post.id)
 
 def search(request):
-    """
-    paprasta paieška. query ima informaciją iš paieškos laukelio,
-    search_results prafiltruoja pagal įvestą tekstą knygų pavadinimus ir aprašymus.
-    Icontains nuo contains skiriasi tuo, kad icontains ignoruoja ar raidės 
-    didžiosios/mažosios.
-    """
     query = request.GET.get('query')
     search_results = User.objects.filter(Q(username__icontains=query))
     return render(request, 'search.html', {'search_results': search_results, 'query': query})
+
+@login_required()
+def like_post(request):
+    post = Post.objects.get(pk=request.POST.get("posto_id"))
+    print(request.POST.get("posto_id"))
+    user = request.user
+    liked = False
+    like = Like.objects.filter(user=user, post=post)
+    if like:
+        like.delete()
+    else:
+        liked = True
+        Like.objects.create(user=user, post=post)
+        # messages.success('You Liked the post')
+    return redirect('index')

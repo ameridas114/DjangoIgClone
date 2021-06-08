@@ -19,6 +19,12 @@
         <a href="{% url 'post_detail' post_id=post.id %}">
             <img  src="{{post.nuotrauka.url}}"></img>
         </a>
+        <form  action="{% url 'post_like' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-block btn-primary"><i class="fa fa-thumbs-up">Like</i> </button>
+            <input name="posto_id" value="{{ post.id }}" type="hidden">
+        </form>
+        <p>{{ post.likes.count }}</p>
     </div>
     <div class="description">
         <a href="{% url 'profilis' post.uploaded_by.profilis.id %}">
@@ -34,6 +40,7 @@
             </p>
             {% endfor %}
             {% endif %}
+        </div>
             <form id="contactForm" action="#" action="" method="post" class="comment-form">
                 {% csrf_token %}
                 <div class="form-group-comment">
@@ -42,7 +49,6 @@
                     <button id="submit-comment" type="submit" onKeyPress="{submitOnEnter}">Submit</button>
                 </div>
             </form>
-        </div>
     </div>
 </div>
 {% endfor %}
