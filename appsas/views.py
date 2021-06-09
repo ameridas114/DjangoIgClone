@@ -21,6 +21,12 @@ from django.views.generic import DetailView
 @login_required
 def index(request):
     posts = Post.objects.all()
+    liked_users = {}
+    for post in posts:
+        tuscias_listas = []
+        for like in post.likes.all():
+            tuscias_listas.append(like.user)
+        liked_users[post.id]=tuscias_listas
     if request.method=='POST':
         comment=PostComment(content=request.POST.get("komentaras"),
         date_commented=request.POST.get("date"),
@@ -31,8 +37,10 @@ def index(request):
         print(comment.date_commented-datetime.now(timezone.utc)),
     context = {
         'posts': posts,
+        'liked_users': liked_users,
     }
     return render(request, 'index.html', context=context)
+
 
 @login_required
 def profilis(request, id):
@@ -157,5 +165,4 @@ def like_post(request):
     else:
         liked = True
         Like.objects.create(user=user, post=post)
-        # messages.success('You Liked the post')
     return redirect('index')
