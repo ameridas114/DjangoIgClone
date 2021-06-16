@@ -16,6 +16,10 @@
         <img  src="{{post.nuotrauka.url}}"></img>
     </a>
 </div>
+<br>
+<strong>
+    {{ post.description }}
+</strong>
 </div>
 {% if request.user == post.uploaded_by %}
 <form  action="{% url 'post_remove' post.id %}" method="post">
@@ -23,6 +27,20 @@
     <input class="btn btn-danger" type="submit" value="Delete">
 </form>
 {% endif %}
+{% if request.user in liked_users.post.id %}
+<form  action="{% url 'post_like' %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-block btn-danger"><i class="fa fa-thumbs-down">Dislike</i> </button>
+    <input name="posto_id" value="{{ post.id }}" type="hidden">
+</form>
+{% else %}
+<form  action="{% url 'post_like' %}" method="post">
+    {% csrf_token %}
+    <button class="btn btn-block btn-primary"><i class="fa fa-thumbs-up">Like</i> </button>
+    <input name="posto_id" value="{{ post.id }}" type="hidden">
+</form>
+{% endif %}
+<p>Like count: <strong>{{ post.likes.count }}</strong></p>
 
 <div class="container mt-1">
     <div class="row d-flex justify-content-center">

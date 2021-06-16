@@ -4,7 +4,7 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <div class="upload_container">
-        <input name="file" type="file" id="file">
+        <input name="file" type="file" id="file" accept="image/png, image/gif, image/jpeg">
         <img id="prew" alt="" class="preview_photo"/>
         <label>Description:</label>
         <input name='description' type="text">

@@ -2,6 +2,7 @@ from django.db import models
 from PIL import Image
 from django.contrib.auth.models import User
 
+
 class Post(models.Model):
     uploaded_by = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=200)
@@ -19,7 +20,7 @@ class Post(models.Model):
 
     def __str__(self):
         return self.description
-        
+
 
 class PostComment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=False, blank=False, related_name='comments')

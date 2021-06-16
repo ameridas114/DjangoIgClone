@@ -12,7 +12,7 @@ function submitOnEnter(event){
 
 document.getElementById("comment").addEventListener("keypress", submitOnEnter);
 
-// function myFunction(x) {
-//   x.classList.toggle("fa-thumbs-down");
-//   x.preventDefault();
-// }
+function myFunction(x) {
+  x.classList.toggle("fa-thumbs-down");
+  x.preventDefault();
+}

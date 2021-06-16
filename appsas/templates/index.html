@@ -20,7 +20,6 @@
             <img  src="{{post.nuotrauka.url}}"></img>
         </a>
         {% with indexas=post.id %}
-        {{indexas}}
         {% if request.user in liked_users.indexas %}
         <form  action="{% url 'post_like' %}" method="post">
             {% csrf_token %}
@@ -35,7 +34,7 @@
         </form>
         {% endif %}
         {% endwith %}
-        <p>{{ post.likes.count }}</p>
+        <p>Like count: {{ post.likes.count }}</p>
         
     </div>
     <div class="description">

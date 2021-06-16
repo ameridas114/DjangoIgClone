@@ -98,7 +98,6 @@ def register(request):
     return render(request, 'register.html')
 
 
-
 @login_required()
 def new_post(request):
     if request.method == "POST":
@@ -129,7 +128,6 @@ def detailed_post(request, post_id):
     }
 
     return render(request, 'post_detail.html', context)
-
 
 
 @login_required()
@@ -166,3 +164,18 @@ def like_post(request):
         liked = True
         Like.objects.create(user=user, post=post)
     return redirect('index')
+
+
+# @login_required()
+# def like_post_detailed(request):
+#     post = Post.objects.get(pk=request.POST.get("posto_id"))
+#     print(request.POST.get("posto_id"))
+#     user = request.user
+#     liked = False
+#     like = Like.objects.filter(user=user, post=post)
+#     if like:
+#         like.delete()
+#     else:
+#         liked = True
+#         Like.objects.create(user=user, post=post)
+#     return redirect('post_detail')
